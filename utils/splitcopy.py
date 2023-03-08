@@ -15,11 +15,11 @@ def CopyFilesFromJSONDictToDir(json_file, src_dir, dest_dir):
     with open(json_file, "r") as f:
         split_data = json.load(f)
     for key, val in split_data.items():
-        src = join(src_dir, val)
         dest_dir = join(parent_dir, key)
         if not isdir(dest_dir):
             os.makedirs(dest_dir)
-        shutil.copy2(src, dest_dir)
+        for filename in val:
+            shutil.copy2(join(src_dir, filename), dest_dir)
 
 if __name__ == "__main__":
     # JSON File containing dictionary with filenames for respective split
