@@ -3,12 +3,12 @@ from os.path import isdir, abspath, join
 import json
 import shutil
 
-def CopyFilesFromJSONDictToDir(json_file, src_dir, dest_dir):
+def CopyDirsFromJSONDictToDir(json_file, src_dir, dest_dir):
     """
     Given a json file containing a dictionary where keys are sub-directories to
-    create in the dest_dir and values are the filenames that belong in those
-    respective sub-directories, copy files from src_dir to their respective sub-
-    directories accordingly.
+    create in the dest_dir and values are the second order directories that
+    belong in those respective sub-directories, copy files from src_dir to their
+    respective sub-directories accordingly.
     """
     if not isdir(parent_dir):
         raise Exception("Parent directory does not exist")
@@ -16,10 +16,8 @@ def CopyFilesFromJSONDictToDir(json_file, src_dir, dest_dir):
         split_data = json.load(f)
     for key, val in split_data.items():
         dest_dir = join(parent_dir, key)
-        if not isdir(dest_dir):
-            os.makedirs(dest_dir)
-        for filename in val:
-            shutil.copy2(join(src_dir, filename), dest_dir)
+        for dirpath in val:
+            shutil.copytree(join(src_dir, dirpath), join(dest_dir, dirpath))
 
 if __name__ == "__main__":
     # JSON File containing dictionary with filenames for respective split
@@ -28,4 +26,4 @@ if __name__ == "__main__":
     src_dir = abspath(sys.argv[2])
     # Parent destination directory
     parent_dir = abspath(sys.argv[3])
-    CopyFilesFromJSONDictToDir(split_file, src_dir, parent_dir)
+    CopyDirsFromJSONDictToDir(split_file, src_dir, parent_dir)
