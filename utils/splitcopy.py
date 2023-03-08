@@ -17,6 +17,7 @@ def CopyDirsFromJSONDictToDir(json_file, src_dir, dest_dir):
     for key, val in split_data.items():
         dest_dir = join(parent_dir, key)
         for dirpath in val:
+            print(f"Copying {dirpath}")
             shutil.copytree(join(src_dir, dirpath), join(dest_dir, dirpath))
 
 if __name__ == "__main__":
